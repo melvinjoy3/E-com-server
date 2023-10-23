@@ -41,7 +41,6 @@ module.exports = {
   },
 
   doLogin: (loginDetails) => {
-    let loginStatusFlag = false;
     let response = {};
     return new Promise(async (resolve, reject) => {
       const client = await connect();
@@ -52,8 +51,6 @@ module.exports = {
       if (user) {
         bcrypt.compare(loginDetails.password, user.password).then((status) => {
           if (status) {
-            console.log("login success");
-            // resolve(user);
             response.user = user;
             response.status = true;
             resolve(response)
