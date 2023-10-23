@@ -24,7 +24,6 @@ const { connect } = require('../config/connection'); // Import the connect funct
 
 module.exports = {
   addProducts: async (products, callback) => {
-    console.log("products", products);
     const client = await connect(); // Connect to the MongoDB and get the client
     await client.db(dbName).collection("Test2").insertOne(products);
     client.close(); // Close the client when done
