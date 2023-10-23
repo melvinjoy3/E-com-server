@@ -40,7 +40,7 @@ module.exports = {
     });
   },
 
-  doLogin: (loginDetails) => {
+  doLogin: (loginDetails) => { 
     let response = {};
     return new Promise(async (resolve, reject) => {
       const client = await connect();
