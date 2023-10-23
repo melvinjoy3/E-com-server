@@ -16,14 +16,13 @@ app.post("/sign-up", async (req, res) => {
       status: 1,
       data: result,
     };
-
     res.status(200).json(jsonData);
     
   })
     
   } catch (err) {
     console.error("Error signup:", err);
-    res.status(500).json({ message: "signup error" });
+    res.status(500).json({ message: err });
   }
 });
 
