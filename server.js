@@ -33,7 +33,6 @@ app.post("/sign-up", async (req, res) => {
   userHelpers
   .doSignUp(req.body)
   .then((resp) => {
-    console.log("resp", resp);
     const jsonData = {
       message: "ok",
       status: 1,
@@ -46,9 +45,17 @@ app.post("/sign-up", async (req, res) => {
   });
 });
 
+app.post('/login',(req,res)=>{
+  userHelpers.doLogin(req.body).then((resp)=>{
+    console.log('loginDetails',resp);
+    res.send(resp);
+  }).catch((error)=>{
+    console.log('error: Login',error);
+  })
+})
+
 app.post("/add-product", async (req, res) => {
   try {
-
   productHelper.addProduct(req.body,(result)=>{
     const jsonData = {
       message: "ok",

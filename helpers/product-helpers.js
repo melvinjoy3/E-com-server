@@ -4,7 +4,6 @@ const collection = require('../config/collections');
 
 module.exports = {
   signUp: async (auth, callback) => {
-    console.log("auth", auth);
     try{
         const client = await connect(); // Connect to the MongoDB and get the client
         await client.db(dbName).collection(collection.AUTHENTICATION).insertOne(auth);
@@ -17,7 +16,6 @@ module.exports = {
   },
 
   addProduct:async(product, callback)=>{
-    console.log('procducts',product);
 
     try{
         const client = await connect();

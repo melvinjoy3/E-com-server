@@ -4,29 +4,28 @@ const collection = require("../config/collections");
 const bcrypt = require("bcrypt");
 
 module.exports = {
-/**
- * 
- * ! Call back function
- */    
-//   doSignUp: async (usersData,callback) => {
-//     console.log("usersData", usersData.password);
-//     const client = await connect();
-//     usersData.password = await bcrypt.hash(usersData.password, 10);
-//     await client
-//       .db(dbName)
-//       .collection(collection.USER_COLLECTION)
-//       .insertOne(usersData);
+  /**
+   *
+   * ! Call back function
+   */
+  //   doSignUp: async (usersData,callback) => {
+  //     console.log("usersData", usersData.password);
+  //     const client = await connect();
+  //     usersData.password = await bcrypt.hash(usersData.password, 10);
+  //     await client
+  //       .db(dbName)
+  //       .collection(collection.USER_COLLECTION)
+  //       .insertOne(usersData);
 
-//       callback(usersData);
-//   },
+  //       callback(usersData);
+  //   },
 
-/**
- * !PROMISE FUNCTION
- */
-doSignUp: (usersData) => {
+  /**
+   * !PROMISE FUNCTION
+   */
+  doSignUp: (usersData) => {
     return new Promise(async (resolve, reject) => {
       try {
-        console.log("usersData", usersData.password);
         const client = await connect();
         usersData.password = await bcrypt.hash(usersData.password, 10);
         await client
@@ -41,4 +40,32 @@ doSignUp: (usersData) => {
     });
   },
 
+  doLogin: (loginDetails) => {
+    let loginStatusFlag = false;
+    let response = {};
+    return new Promise(async (resolve, reject) => {
+      const client = await connect();
+      const user = await client
+        .db(dbName)
+        .collection(collection.USER_COLLECTION)
+        .findOne({ email: loginDetails.email });
+      if (user) {
+        bcrypt.compare(loginDetails.password, user.password).then((status) => {
+          if (status) {
+            console.log("login success");
+            // resolve(user);
+            response.user = user;
+            response.status = true;
+            resolve(response)
+          } else {
+            console.log("login failed");
+            resolve({status:false});
+          }
+        });
+      } else {
+        console.log("User has no account");
+        resolve({status:false});
+      }
+    });
+  },
 };
