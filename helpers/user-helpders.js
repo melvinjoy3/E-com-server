@@ -5,22 +5,6 @@ const bcrypt = require("bcrypt");
 
 module.exports = {
   /**
-   *
-   * ! Call back function
-   */
-  //   doSignUp: async (usersData,callback) => {
-  //     console.log("usersData", usersData.password);
-  //     const client = await connect();
-  //     usersData.password = await bcrypt.hash(usersData.password, 10);
-  //     await client
-  //       .db(dbName)
-  //       .collection(collection.USER_COLLECTION)
-  //       .insertOne(usersData);
-
-  //       callback(usersData);
-  //   },
-
-  /**
    * !PROMISE FUNCTION
    */
   doSignUp: (usersData) => {
