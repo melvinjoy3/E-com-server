@@ -1,16 +1,18 @@
 const express = require("express");
 const session = require('express-session')
+const cors = require('cors')
 const productHelper = require("./helpers/product-helpers");
 const userHelpers = require("./helpers/user-helpders");
 const app = express();
 const port = 8383;
 
 app.use(express.json());
+app.use(cors());
 app.use(session({secret:"key",cookie:{maxAge:24000}}));
 
 app.get('/',(req,res)=>{
-  let user = req.session.user;
-  res.send({message:"hi",user});
+  // let user = req.session.user;
+  res.send({message:"hi"});
 })
 app.post("/sign-up", async (req, res) => {
   /**
@@ -47,6 +49,7 @@ app.post("/sign-up", async (req, res) => {
   .catch((error) => {
     console.log("error", error);
   });
+
 });
 
 app.post('/login',(req,res)=>{
