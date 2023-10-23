@@ -26,6 +26,25 @@ app.post("/sign-up", async (req, res) => {
   }
 });
 
+app.post("/add-product", async (req, res) => {
+  try {
+
+  productHelper.addProduct(req.body,(result)=>{
+    const jsonData = {
+      message: "ok",
+      status: 1,
+      data: result,
+    };
+    res.status(200).json(jsonData);
+    
+  })
+    
+  } catch (err) {
+    console.error("Error signup:", err);
+    res.status(500).json({ message: err });
+  }
+});
+
 app.listen(port, () => console.log(`Server is running on port ${port}`));
 
 
