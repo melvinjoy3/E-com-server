@@ -1,13 +1,17 @@
 const express = require("express");
-const db = require('./config/connection')
+const session = require('express-session')
 const productHelper = require("./helpers/product-helpers");
 const userHelpers = require("./helpers/user-helpders");
 const app = express();
 const port = 8383;
 
 app.use(express.json());
+app.use(session({secret:"key",cookie:{maxAge:24000}}));
 
-
+app.get('/',(req,res)=>{
+  let user = req.session.user;
+  res.send({message:"hi",user});
+})
 app.post("/sign-up", async (req, res) => {
   /**
    * !Call back function
@@ -47,8 +51,9 @@ app.post("/sign-up", async (req, res) => {
 
 app.post('/login',(req,res)=>{
   userHelpers.doLogin(req.body).then((resp)=>{
-    console.log('loginDetails',resp);
     res.send(resp);
+    req.session.loggedIn = true;
+    req.session.user = resp.user;
   }).catch((error)=>{
     console.log('error: Login',error);
   })
