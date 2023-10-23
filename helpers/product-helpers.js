@@ -14,4 +14,18 @@ module.exports = {
     }
     
   },
+
+  addProduct:async(product, callback)=>{
+    console.log('procducts',product);
+
+    try{
+        const client = await connect();
+        await client.db(dbName).collection('addProduct').insertOne(product);
+        client.close();
+        callback(product);
+
+    }catch(error){
+        console.log('Error : add product',error);
+    }
+  }
 };
