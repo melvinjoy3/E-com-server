@@ -9,17 +9,25 @@ module.exports = {
    */
   doSignUp: (usersData) => {
     return new Promise(async (resolve, reject) => {
-      try {
-        const client = await connect();
-        usersData.password = await bcrypt.hash(usersData.password, 10);
-        await client
-          .db(dbName)
-          .collection(collection.USER_COLLECTION)
-          .insertOne(usersData);
-        client.close();
-        resolve(usersData);
-      } catch (error) {
-        reject(error);
+      const client = await connect();
+      let user = await client
+        .db(dbName)
+        .collection(collection.USER_COLLECTION)
+        .findOne({ email: usersData.email });
+      if (user) {
+        resolve({ status: "Account already exist" });
+      } else if (user === null) {
+        try {
+          usersData.password = await bcrypt.hash(usersData.password, 10);
+          await client
+            .db(dbName)
+            .collection(collection.USER_COLLECTION)
+            .insertOne(usersData);
+          client.close();
+          resolve(usersData);
+        } catch (error) {
+          reject(error);
+        }
       }
     });
   },
@@ -37,15 +45,15 @@ module.exports = {
           if (status) {
             response.user = user;
             response.status = true;
-            resolve(response)
+            resolve(response);
           } else {
             console.log("login failed");
-            resolve({status:false});
+            resolve({ status: false });
           }
         });
       } else {
         console.log("User has no account");
-        resolve({status:false});
+        resolve({ status: false });
       }
     });
   },
